@@ -1,0 +1,21 @@
+<div class="pw-reset">
+    <!-- Title -->
+    <div class="pw-reset-title">
+        <h1>{{ 'pw_reset.title' | translate }}</h1>
+    </div>
+
+    <!-- Sign up form -->
+    <form [formGroup]="form" (ngSubmit)="changePw()">
+        <input formControlName="password" [type]="showPw ? 'text' : 'password'" [placeholder]="'app.forms.password' | translate">
+        
+        <div class="pw-reset--password">
+            <input formControlName="password_confirm" type="password" [placeholder]="'app.forms.password_confirm' | translate">
+            <!-- Icon for show/hide password; TODO: Add icon (icon set) -->
+            <div (click)="showPw = !showPw">{{ showPw }}</div>
+        </div>
+        
+        <button type="submit">
+            <span>{{ 'pw_reset.change_pw' | translate }}</span>
+        </button>
+    </form>
+</div>

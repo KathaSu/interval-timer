@@ -1,0 +1,23 @@
+<div class="settings">
+    <div class="settings-title">
+        <h1>{{ 'settings.title' | translate }}</h1> 
+    </div>
+
+    <div class="settings-theme">
+        <h2>{{ 'settings.theme' | translate }}</h2>
+        <div class="settings-theme--radio">
+            <input type="radio" value="dark" name="theme" [checked]="theme === themeType.Dark" (change)="changeTheme(themeType.Dark)"> 
+            {{ 'settings.theme.dark' | translate }}
+        </div>
+        
+        <div class="settings-theme--radio">
+            <input type="radio" value="light" name="theme" [checked]="theme === themeType.Light" (change)="changeTheme(themeType.Light)"> 
+             {{ 'settings.theme.dark' | translate }}
+        </div>
+    </div>
+
+    <div class="settings-color" (click)="changeColor()">
+        <h2>{{ 'settings.color' | translate }}</h2>
+        <!-- Color picker -->
+    </div>
+</div>

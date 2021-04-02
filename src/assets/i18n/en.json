@@ -1,0 +1,45 @@
+{
+    "app": {
+        "title": "Interval timer",
+        "actions": {
+            "submit": "Submit",
+            "cancel": "Cancel",
+            "back": "Back"
+        },
+        "forms": {
+            "email": "Email",
+            "password": "Password",
+            "password_confirm": "Confirm password"
+        },
+        "notifications": {
+            "page_not_found": "Page not found - Something went wrong"
+        }
+    },
+    "login": {
+        "title": "Login",
+        "via_email": "Login with Email",
+        "via_google": "Login with Google",
+        "forgot_pw": "Forgot password"
+    },
+    "pw_reset": {
+        "title": "Set new password",
+        "change_pw": "Change password"
+    },
+    "sign_up": {
+        "title": "Sign up",
+        "no_account": "Don't have an account?"
+    },
+    "logout": {
+        "title": "Logout",
+        "info": "You have been logout successfully.",
+        "question": "Are you sure you want to logout?"
+    },
+    "settings": {
+        "title": "Settings",
+        "theme": "Theme",
+        "color": "Highlight color"
+    },
+    "timer": {
+        "total": "Total time"
+    }
+}

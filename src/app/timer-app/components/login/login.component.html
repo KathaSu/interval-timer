@@ -1,0 +1,79 @@
+<ng-container [ngSwitch]="view">
+    <!-- View: Default  -->
+    <ng-container *ngSwitchDefault>
+        <div class="login">
+            <div class="login-title">
+                <h1>{{ 'app.title' | translate }}</h1>
+            </div>
+
+            <!-- Login via email or google -->
+            <div class="login-via">
+                <button (click)="view = viewType.Email; resetSubmitted()">
+                    <span>{{ 'login.via_email' | translate }}</span>
+                </button>
+
+                <button (click)="googleLogin()">
+                    <span>{{ 'login.via_google' | translate }}</span>
+                </button>
+            </div>
+
+            <!-- Sign up or forgot password -->
+            <div class="login-signup">
+                <a [routerLink]="['/sign-up']">
+                    <span>{{ 'sign_up.no_account' | translate }} {{ 'sign_up.title' | translate }}</span>
+                </a>
+
+                <a (click)="view = viewType.ForgotPw; resetSubmitted()">
+                    <span>{{ 'login.forgot_pw' | translate }}</span>
+                </a>
+            </div> 
+        </div>
+    </ng-container>
+
+    <!-- View: Email login  -->
+    <ngContainer *ngSwitchCase="viewType.Email">
+        <div class="login-title">
+            <h1>{{ 'login.via_email' | translate }}</h1>
+        </div>
+
+        <div class="login-via-email">
+            <div class="login-via-email--back" (click)="view = viewType.Default; resetSubmitted()">
+                {{ 'app.actions.back' | translate }}
+            </div>
+
+            <!-- TODO: Add validation styling  -->
+            <form [formGroup]="loginForm" (ngSubmit)="emailLogin()">
+                <input formControlName="email" type="text" [placeholder]="'app.forms.email' | translate">
+                <div class="login-via-email--password">
+                    <input formControlName="password" [type]="showPw ? 'text' : 'password'" [placeholder]="'app.forms.password' | translate">
+                    <!-- Icon for show/hide password; TODO: Add icon (icon set) -->
+                    <div (click)="showPw = !showPw">{{ showPw }}</div>
+                </div>
+
+                <button type="submit">
+                    <span>{{ 'login.title' | translate }}</span>
+                </button>
+            </form>
+        </div>
+    </ngContainer>
+
+    <!-- View: Forgot password -->
+    <ngContainer *ngSwitchCase="viewType.ForgotPw">
+        <div class="login-title">
+            <h1>{{ 'login.forgot_pw' | translate }}</h1>
+        </div>
+
+        <div class="login-forgot-pw">
+            <div class="login-via-email--back" (click)="view = viewType.Default; resetSubmitted()">
+                {{ 'app.actions.back' | translate }}
+            </div>
+        </div>
+
+        <form [formGroup]="forgotPwForm" (ngSubmit)="forgotPw()">
+            <input formControlName="email" type="text" [placeholder]="'app.forms.email' | translate">
+            <button type="submit">
+                <span>{{ 'app.actions.submit' | translate }}</span>
+            </button>
+        </form>
+    </ngContainer>
+</ng-container>

@@ -1,0 +1,17 @@
+<!-- TODO: Add drag and drop via angular cdk -->
+<div cdkDropList [cdkDropListData]="list" (cdkDropListDropped)="drop($event)">
+    <div class="timer-list" *ngFor="let item of list; let idx = index" cdkDrag>
+        <div class="timer-list--item" (click)="selectedTimer = item">
+            <span>{{ item.title }}</span>
+            <div class="timer-list--item-number">
+                <span>{{ item.intervals.length }}</span>
+                <!-- TODO: Add watch/timer icon -->
+            </div>
+            <span>{{ 'timer.total' | translate }}: {{ item.total }}</span>
+            <!-- Delete item -->
+            <div (click)="deleteTimer(idx, item.id)"></div>
+        </div>
+    </div>
+</div>
+
+<app-timer-intervals [timer]="selectedTimer"></app-timer-intervals>

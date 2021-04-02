@@ -1,0 +1,13 @@
+<div class="timer-intervals">
+    <div class="timer-intervals--header">
+        <h1>{{ timer.title }}</h1>
+        <span>{{ timer.intervals.length }}</span>
+        <!-- Total duration -->
+        <span>{{ timer.intervals.length }}</span>
+    </div>
+
+    <div *ngFor="let item of timer.intervals">
+        <div>{{ interval.title }}</div>
+        <div>{{ interval.time }}</div>
+    </div>
+</div>
