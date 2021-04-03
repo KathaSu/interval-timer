@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { IntervalTimer } from '../timer-list/timer-list.interface';
 
 @Component({
@@ -8,10 +9,11 @@ import { IntervalTimer } from '../timer-list/timer-list.interface';
 })
 export class TimerIntervalsComponent implements OnInit {
   @Input() timer: IntervalTimer; 
+  @Output() readonly backToList = new EventEmitter();
   
-  constructor() { }
+  constructor(
+  ) { }
 
   ngOnInit(): void {
   }
-
 }

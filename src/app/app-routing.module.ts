@@ -17,7 +17,6 @@ const routes: Routes = [
   { path: 'timer', component: TimerComponent },
   { path: 'pw-reset', component: PwResetComponent },
   { path: 'logout', component: LogoutComponent },
-  { path: 'error', component: ErrorComponent },
   { path: '**', component: ErrorComponent },
 ]
 

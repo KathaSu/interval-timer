@@ -17,7 +17,7 @@
     },
     "login": {
         "title": "Login",
-        "via_email": "Login with Email",
+        "to": "Login to",
         "via_google": "Login with Google",
         "forgot_pw": "Forgot password"
     },
@@ -36,7 +36,11 @@
     },
     "settings": {
         "title": "Settings",
-        "theme": "Theme",
+        "theme": {
+            "title": "Theme",
+            "dark": "dark",
+            "light": "light"
+        },
         "color": "Highlight color"
     },
     "timer": {

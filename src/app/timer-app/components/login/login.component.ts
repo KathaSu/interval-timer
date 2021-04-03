@@ -1,14 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ViewType } from './login.enum';
+import { BaseApiService } from '../../../shared/services/base-api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy {  
+export class LoginComponent extends BaseApiService implements OnInit, OnDestroy {  
+  readonly stub = 'login/';
+
   view = ViewType.Default;
   viewType = ViewType;  
   showPw = false;
@@ -21,8 +27,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     ]),
     password: new FormControl('', [
       Validators.required,
-      // Minimum eight characters, at least one letter, one number and one special character
-      Validators.pattern("^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"),
+      // TODO: Correct regex for password
+      // Minimum eight characters, at least one letter and one number:
+      // Validators.pattern("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"),
     ]),
   });
 
@@ -36,17 +43,21 @@ export class LoginComponent implements OnInit, OnDestroy {
   private static readonly EMAIL_VALIDATOR = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'; 
   private destroy$ = new Subject();
 
-  constructor() { 
+  constructor(
+    private router: Router,
+    protected http: HttpClient,
+  ) { 
+    super(http);
   }
 
   ngOnInit(): void {
     // Observe form changes and then sets submitted to false
     this.loginForm.valueChanges.subscribe(() => {
       this.submitted = false;
-    })
+    });
     this.forgotPwForm.valueChanges.subscribe(() => {
       this.submitted = false;
-    })
+    });
   }
   
   ngOnDestroy(): void {
@@ -58,16 +69,19 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Login via email
    */
   emailLogin(): void {
+    console.log('MUH', this.loginForm);
     this.submitted = true;
     if (this.loginForm.valid) {
-      console.log('login', this.loginForm.valid, this.loginForm.getRawValue());
-      // TODO: Request 
-      // this.http.post(this.loginForm.getRawValue())
-      //   .pipe(takeUntil(this.destroy$))
-      //   .subscribe(
-      //     () => this.loginForm.reset(),
-      //     () => null,
-      //   )
+      // TODO: Adjust request response and error handling
+      this.post(this.loginForm.getRawValue())
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          () => { 
+            this.router.navigateByUrl('/timer-list');
+            this.loginForm.reset(); 
+          },
+          () => this.router.navigateByUrl('/timer-list'),
+        )
     }
   }
 
@@ -85,13 +99,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.submitted = true;
     if (this.forgotPwForm.valid) {
       console.log('forgotPw', this.forgotPwForm.valid, this.forgotPwForm.getRawValue());
-      // TODO: Request
-      // this.http.post(this.forgotPwForm.getRawValue())
-      //   .pipe(takeUntil(this.destroy$))
-      //   .subscribe(
-      //     () => this.forgotPwForm.reset(),
-      //     () => null,
-      //   )
+      // TODO: Adjust request
+      this.post(this.forgotPwForm.getRawValue())
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(
+          () => this.forgotPwForm.reset(),
+          () => null,
+        )
     }
   }
 

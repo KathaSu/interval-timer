@@ -4,7 +4,7 @@
     </div>
 
     <div class="settings-theme">
-        <h2>{{ 'settings.theme' | translate }}</h2>
+        <h2>{{ 'settings.theme.title' | translate }}</h2>
         <div class="settings-theme--radio">
             <input type="radio" value="dark" name="theme" [checked]="theme === themeType.Dark" (change)="changeTheme(themeType.Dark)"> 
             {{ 'settings.theme.dark' | translate }}
@@ -12,7 +12,7 @@
         
         <div class="settings-theme--radio">
             <input type="radio" value="light" name="theme" [checked]="theme === themeType.Light" (change)="changeTheme(themeType.Light)"> 
-             {{ 'settings.theme.dark' | translate }}
+             {{ 'settings.theme.light' | translate }}
         </div>
     </div>
 

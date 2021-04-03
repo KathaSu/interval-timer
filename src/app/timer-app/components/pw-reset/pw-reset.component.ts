@@ -1,21 +1,27 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { BaseApiService } from '../../../shared/services/base-api.service';
 
 @Component({
   selector: 'app-pw-reset',
   templateUrl: './pw-reset.component.html',
   styleUrls: ['./pw-reset.component.scss']
 })
-export class PwResetComponent implements OnInit, OnDestroy {
+export class PwResetComponent extends BaseApiService implements OnInit, OnDestroy {
+  readonly stub = 'pw-reset/';
+  
   submitted: boolean;
   showPw: boolean;
 
   form: FormGroup = new FormGroup({
     password: new FormControl('', [
       Validators.required,
+      // TODO: Correct regex for password
       // Minimum eight characters, at least one letter, one number and one special character
-      Validators.pattern("^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"),
+      // Validators.pattern("^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"),
     ]),
     password_confirm: new FormControl('', [
       Validators.required,
@@ -25,8 +31,11 @@ export class PwResetComponent implements OnInit, OnDestroy {
   private static readonly EMAIL_VALIDATOR = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'; 
   private destroy$ = new Subject();
 
-  constructor() { }
-
+  constructor(
+    protected http: HttpClient,
+  ) { 
+    super(http);
+  }
   ngOnInit(): void {
     // Observe form changes and then sets submitted to false
     this.form.valueChanges.subscribe(() => {
@@ -59,12 +68,12 @@ export class PwResetComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // TODO: Request 
-    // this.http.put(rawForm)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(
-    //     () => this.form.reset(),
-    //     () => null,
-    //   )
+    // TODO: Adjust request 
+    this.put(rawForm)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => this.form.reset(),
+        () => null,
+      )
   }
 }

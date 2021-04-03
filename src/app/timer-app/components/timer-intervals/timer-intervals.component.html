@@ -1,3 +1,7 @@
+<div class="timer-intervals--back" (click)="backToList.emit()">
+    <span>{{ 'app.actions.back' | translate }}</span>
+</div>
+
 <div class="timer-intervals">
     <div class="timer-intervals--header">
         <h1>{{ timer.title }}</h1>
@@ -7,7 +11,7 @@
     </div>
 
     <div *ngFor="let item of timer.intervals">
-        <div>{{ interval.title }}</div>
-        <div>{{ interval.time }}</div>
+        <div>{{ item.title }}</div>
+        <div>{{ item.time }}</div>
     </div>
 </div>

@@ -2,13 +2,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IntervalTimer } from './timer-list.interface';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { BaseApiService } from 'src/app/shared/services/base-api.service';
+import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-timer-list',
   templateUrl: './timer-list.component.html',
   styleUrls: ['./timer-list.component.scss']
 })
-export class TimerListComponent implements OnInit, OnDestroy {
+export class TimerListComponent extends BaseApiService implements OnInit, OnDestroy {
+  readonly stub = 'timer-list/';
+
   list: Array<IntervalTimer> = [
     {
       "id": 1234, 
@@ -47,7 +52,11 @@ export class TimerListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject();
 
-  constructor() { }
+  constructor(
+    protected http: HttpClient,
+  ) {
+    super(http);
+   }
 
   ngOnInit(): void {
     // TODO: Get total time of intervals in list
@@ -78,13 +87,13 @@ export class TimerListComponent implements OnInit, OnDestroy {
    * @param id of interval timer 
    */
   deleteTimer(index: number, id: number): void {
-    // TODO: Request 
-    // this.http.delete(id)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(
-    //     () => this.list.splice(index, 1),
-    //     () => null,
-    //   )
+    // TODO: Adjust Request 
+    this.delete(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => this.list.splice(index, 1),
+        () => null,
+      )
   }
 
   
@@ -92,12 +101,12 @@ export class TimerListComponent implements OnInit, OnDestroy {
    * Get list of all interval timer
    */
    private getList(): void {
-    // TODO: Request 
-    // this.http.get()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(
-    //     () => null,
-    //     () => null,
-    //   )
+    // TODO: Adjust request 
+    this.get()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => null,
+        () => null,
+      )
   }
 }

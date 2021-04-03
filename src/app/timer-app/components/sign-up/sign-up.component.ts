@@ -1,7 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { BaseApiService } from 'src/app/shared/services/base-api.service';
 import { SignUpData } from './sign-up.interface';
 
 @Component({
@@ -9,7 +11,9 @@ import { SignUpData } from './sign-up.interface';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit, OnDestroy {
+export class SignUpComponent extends BaseApiService implements OnInit, OnDestroy {
+  readonly stub = 'sign-up/';
+  
   submitted: boolean;
   showPw: boolean;
 
@@ -31,7 +35,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
   private static readonly EMAIL_VALIDATOR = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'; 
   private destroy$ = new Subject();
 
-  constructor() { }
+  constructor(
+    protected http: HttpClient,
+  ) {
+    super(http);
+  }
 
   ngOnInit(): void {
     // Observe form changes and then sets submitted to false
@@ -65,13 +73,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // TODO: Request 
-    // this.http.put(rawForm)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe(
-    //     () => this.form.reset(),
-    //     () => null,
-    //   )
+    // TODO: Adjust request 
+    this.put(rawForm)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        () => this.form.reset(),
+        () => null,
+      )
   }
 
   /**

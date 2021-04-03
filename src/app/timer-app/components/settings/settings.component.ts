@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+
 import { ThemeType } from './settings.enum';
 
 @Component({
@@ -7,11 +8,13 @@ import { ThemeType } from './settings.enum';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  theme: number;
+  theme: string;
   color: string;
   themeType = ThemeType;
 
-  constructor() { }
+  constructor(
+    private renderer: Renderer2,
+  ) {}
 
   ngOnInit(): void {
     console.log(localStorage.getItem('theme'));
@@ -23,9 +26,14 @@ export class SettingsComponent implements OnInit {
   /**
    * Store theme value in local storage
    */
-  changeTheme(type: number): void {
+  changeTheme(type: string): void {
+    // Remove actual theme class 
+    this.renderer.removeClass(document.body, `theme-${this.theme}`);
+    
+    // Change theme type 
     this.theme = type;
-    localStorage.setItem('theme', this.theme.toString());
+    localStorage.setItem('theme', this.theme);
+    this.renderer.addClass(document.body, `theme-${this.theme}`);
   }
 
   /**
