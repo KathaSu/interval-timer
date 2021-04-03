@@ -10,7 +10,6 @@ import { TimerListComponent } from './components/timer-list/timer-list.component
 import { TimerComponent } from './components/timer/timer.component';
 import { PwResetComponent } from './components/pw-reset/pw-reset.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { ErrorComponent } from './components/error/error.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -26,7 +25,6 @@ import { TimerIntervalsComponent } from './components/timer-intervals/timer-inte
     TimerListComponent,
     TimerComponent,
     PwResetComponent,
-    SignUpComponent,
     ErrorComponent,
     TimerIntervalsComponent,
   ],
@@ -45,7 +43,6 @@ import { TimerIntervalsComponent } from './components/timer-intervals/timer-inte
     TimerListComponent,
     TimerComponent,
     PwResetComponent, 
-    SignUpComponent,
     ErrorComponent,
   ],
 })

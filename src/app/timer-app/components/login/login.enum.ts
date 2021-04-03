@@ -1,4 +1,10 @@
 export enum ViewType {
-    Default,
+    Login,
     ForgotPw,
+    SignUp, 
+}
+
+export enum ApiUrl {
+    Login = 'login/',
+    SignUp = 'sign-up/',
 }

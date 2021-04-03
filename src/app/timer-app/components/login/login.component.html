@@ -1,68 +1,108 @@
-<ng-container [ngSwitch]="view">
-    <!-- View: Default  -->
-    <ng-container *ngSwitchDefault>
-        <div class="login">
-            <div class="login-title">
+<div class="login">
+    <!-- Left container -->
+    <div class="login-container--left">
+        <div class="login-container--left--content" [ngSwitch]="view">
+
+            <!-- View: Login -->
+            <ng-container *ngSwitchDefault>
                 <h1>{{ 'login.to' | translate }} {{ 'app.title' | translate }}</h1>
-            </div>
 
-            <!-- Login -->
-            <div class="login-via">
-                <!-- Via Google -->
-                <button (click)="googleLogin()">
-                    <span>{{ 'login.via_google' | translate }}</span>
-                </button>
+                <!-- Login form -->
+                <div class="login--form">
 
-                <!-- Divider -->
-                <hr class="login-via-or">
-
-                <!-- Via email -->        
-                <div class="login-via-email">        
+                    <!-- Via email -->        
                     <form [formGroup]="loginForm" (ngSubmit)="emailLogin()">
                         <input formControlName="email" type="text" [placeholder]="'app.forms.email' | translate">
-                        <div class="login-via-email--password">
+                        
+                        <div class="login--form-email--password">
                             <input formControlName="password" [type]="showPw ? 'text' : 'password'" [placeholder]="'app.forms.password' | translate">
-                            <!-- Icon for show/hide password; TODO: Add icon (icon set) -->
-                            <div (click)="showPw = !showPw">{{ showPw }}</div>
+                            <div class="icon" (click)="showPw = !showPw">
+                                <span class="material-icons">
+                                    {{ showPw ? 'visibility_off' : 'visibility'}}
+                                </span>
+                            </div>
                         </div>
         
-                        <button type="submit">
+                        <button type="submit" class="primary">
                             <span>{{ 'login.title' | translate }}</span>
+                        </button>
+
+                        <!-- <span class="login--more-options" (click)="view = viewType.ForgotPw; resetSubmitted()">
+                            {{ 'login.forgot_pw' | translate }}
+                        </span> -->
+                    </form>
+
+                    <!-- Divider -->
+                    <hr class="login--divider" [attr.data-after-content]="'login.or' | translate">
+
+                    <!-- Via Google -->
+                    <button (click)="googleLogin()">
+                        <span>{{ 'login.via_google' | translate }}</span>
+                    </button>
+                </div>
+
+                <!-- Sign up -->
+                <span class="login--more-options" (click)="view = viewType.SignUp">
+                    {{ 'sign_up.no_account' | translate }} {{ 'sign_up.title' | translate }}
+                </span>
+            </ng-container>
+
+            <!-- View: Forgot password -->
+            <ngContainer *ngSwitchCase="viewType.ForgotPw">
+                <div class="login--form">
+                    <h1>{{ 'login.forgot_pw' | translate }}</h1>
+
+                    <div class="login--forgot-pw">
+                        <div class="login--via-email--back" (click)="view = viewType.Login; resetSubmitted()">
+                            {{ 'app.actions.back' | translate }}
+                        </div>
+                    </div>
+                    
+                    <!-- Forgot password form -->
+                    <form [formGroup]="forgotPwForm" (ngSubmit)="forgotPw()">
+                        <input formControlName="email" type="text" [placeholder]="'app.forms.email' | translate">
+                        <button type="submit" class="primary">
+                            <span>{{ 'app.actions.submit' | translate }}</span>
                         </button>
                     </form>
                 </div>
-            </div>
+            </ngContainer>
 
-            <!-- Sign up or forgot password -->
-            <div class="login-signup">
-                <a [routerLink]="['/sign-up']">
-                    <span>{{ 'sign_up.no_account' | translate }} {{ 'sign_up.title' | translate }}</span>
-                </a>
+            <!-- View: Sign up -->
+            <ng-container *ngSwitchCase="viewType.SignUp">
+                <div class="login--form">
+                    <!-- Title -->
+                    <h1>{{ 'sign_up.title' | translate }}</h1>
+                
+                    <!-- Sign up form -->
+                    <form [formGroup]="signUpForm" (ngSubmit)="signUp()">
+                        <input formControlName="email" type="text" [placeholder]="'app.forms.email' | translate">
+                        
+                        <div class="login--form-email--password">
+                            <input formControlName="password" [type]="showPw ? 'text' : 'password'" [placeholder]="'app.forms.password' | translate">
+                            <div class="icon" (click)="showPw = !showPw">
+                                <span class="material-icons">
+                                    {{ showPw ? 'visibility_off' : 'visibility'}}
+                                </span>
+                            </div>
+                        </div>
+                
+                        <input class="login--form-email--password-confirm" formControlName="password_confirm" type="password" [placeholder]="'app.forms.password_confirm' | translate">
+                        
+                        <input type="checkbox" formControlName="terms_conditions">
 
-                <a (click)="view = viewType.ForgotPw; resetSubmitted()">
-                    <span>{{ 'login.forgot_pw' | translate }}</span>
-                </a>
-            </div> 
+                        <button type="submit" class="primary">
+                            <span>{{ 'sign_up.title' | translate }}</span>
+                        </button>
+                    </form>
+                
+                    <!-- Back to login -->
+                    <span class="login--more-options" (click)="view = viewType.Login">{{ 'sign_up.already_account' | translate }}</span>
+                </div>
+            </ng-container>
         </div>
-    </ng-container>
+    </div>
 
-    <!-- View: Forgot password -->
-    <ngContainer *ngSwitchCase="viewType.ForgotPw">
-        <div class="login-title">
-            <h1>{{ 'login.forgot_pw' | translate }}</h1>
-        </div>
-
-        <div class="login-forgot-pw">
-            <div class="login-via-email--back" (click)="view = viewType.Default; resetSubmitted()">
-                {{ 'app.actions.back' | translate }}
-            </div>
-        </div>
-
-        <form [formGroup]="forgotPwForm" (ngSubmit)="forgotPw()">
-            <input formControlName="email" type="text" [placeholder]="'app.forms.email' | translate">
-            <button type="submit">
-                <span>{{ 'app.actions.submit' | translate }}</span>
-            </button>
-        </form>
-    </ngContainer>
-</ng-container>
+    <!-- Right container -->
+    <div class="login-container--right"></div>
+</div>

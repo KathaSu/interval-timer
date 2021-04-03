@@ -47,27 +47,39 @@ $breakpoints: (
 /* Theme colors */ 
 // TODO: Classes light and dark should be added to the body
 :root {
-  --bg: #222;
+  --black: #000;
+  --white: #fff;
+  --grey: #4d4d4d; 
+
+  --light-primary: #EFFAFB;
+  --primary: #50C9CE; 
+  --dark-primary: #217A82;
+
+  --light-secondary: #FEECF1;
+  --secondary: #FCD3DE;
+  --dark-secondary: #F98BAA; 
+
+  --gradient: linear-gradient(127deg, rgba(252,211,222,1) 0%, rgba(80,201,206,1) 84%);;
 }
 
 .theme-light {
-  --bg: #fff;
-  --text: #000;
+  --bg: var(--white);
+  --text: var(--black);
 
   background: var(--bg);
   color: var(--text);
 }
 
 .theme-dark {
-  --bg: #000;
-  --text: #fff;
+  --bg: var(--black);
+  --text: var(--white);
 
   background: var(--bg);
   color: var(--text);
 }
 
 /* UI elements */
-app-root {
+.content {
   width: 700px;
   padding: 20px;
   
@@ -76,8 +88,36 @@ app-root {
   }
 }
 
-button {
-  padding: 5px 15px;
-  border-radius: 15px;
+app-root {
+  width: 100%; 
+}
+
+button, 
+input[type=text],
+input[type=password] {
+  padding: 9px 20px;
+  border-radius: 8px;
   border: none;
+  cursor: pointer;
+  
+  &:focus {
+    outline: none; 
+  }
+}
+
+button {
+  &.primary {
+    background: var(--primary);
+    color: var(--white);
+  }
+
+  &.secondary {
+    border: 2px solid var(--primary);
+  }
+}
+
+input {
+  background: var(--light-primary);
+  box-sizing: border-box;
+  width: 100%;
 }
