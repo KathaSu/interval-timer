@@ -1,3 +1,5 @@
+@import 'breakpoints.scss';
+
 .login {
     display: flex;
     flex-direction: row;
@@ -7,15 +9,19 @@
     &-container {
         &--left {
             width: 55%;
-            width: 55%;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 15px;
 
             &--content {
                 max-width: 400px; 
                 width: 100%;
                 text-align: center;
+            }
+
+            @include respond-below(small) {
+                width: 100%;
             }
         }
 
@@ -25,6 +31,10 @@
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center; 
+
+            @include respond-below(small) {
+                display: none;
+            }
         }
     }
 

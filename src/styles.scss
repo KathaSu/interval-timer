@@ -1,6 +1,6 @@
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-
+@import 'breakpoints.scss';
 
 /* General */
 html, body { 
@@ -13,36 +13,6 @@ body {
   display: flex;
   justify-content: center; 
 }
-
-
-/* Breakpoints */ 
-$breakpoints: (
-    'xsmall': 576px,
-    'small':  767px,
-    'medium': 992px,
-    'large': 1200px,
-) !default;
-
-@mixin respond-below($breakpoint) {
-  // If the breakpoint exists in the map.
-  @if map-has-key($breakpoints, $breakpoint) {
-
-    // Get the breakpoint value.
-    $breakpoint-value: map-get($breakpoints, $breakpoint);
-
-    // Write the media query.
-    @media (max-width: ($breakpoint-value - 1)) {
-      @content;
-    }
-
-  // If the breakpoint doesn't exist in the map.
-  } @else {
-
-    // Log a warning.
-    @warn 'Invalid breakpoint: #{$breakpoint}.';
-  }
-}
-
 
 /* Theme colors */ 
 // TODO: Classes light and dark should be added to the body
