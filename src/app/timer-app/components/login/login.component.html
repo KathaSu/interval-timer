@@ -1,7 +1,7 @@
 <div class="login">
     <!-- Left container -->
     <div class="login-container--left">
-        <div class="login-container--left--content" [ngSwitch]="view">
+        <div class="login-container--left--content">
 
             <!-- Headline -->
             <h1>
@@ -35,7 +35,7 @@
         
                 <!-- Confirm password input for sign up -->
                 <ng-container *ngIf="view === viewType.SignUp">
-                    <input formControlName="password_confirm" type="password" class="login--form-email--password-confirm" [placeholder]="'app.forms.password_confirm' | translate">
+                    <input formControlName="password_confirm" type="password" [placeholder]="'app.forms.password_confirm' | translate" class="login--form-email--password-confirm" >
                     <div class="login--checkbox">
                         <input formControlName="terms_conditions" type="checkbox" id="terms" name="terms">
                         <label for="terms">{{ 'sign_up.terms_conditions' | translate }}</label>

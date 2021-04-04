@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { ApiUrls } from '@shared/services/base-api/base-api.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class BaseApiService {
   protected base = '/api/';
   protected stub: string;
+  protected static URLS = ApiUrls;
 
   // protected config = {
   //   get: {

@@ -3,4 +3,6 @@ export enum ApiUrls {
     SignUp = 'sign-up/',
     TimerList = 'timer-list/',
     PwReset = 'pw-reset/',
+    Settings = 'settings/',
+    Logout = 'logout/'
 }

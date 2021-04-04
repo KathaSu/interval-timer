@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { ViewType } from './login.enum';
 import { SignUpData } from './login.interface';
-import { BaseApiService } from '../../../shared/services/base-api/base-api.service';
-import { ApiUrls } from '../../../shared/services/base-api/base-api.enum';
-import { HttpClient } from '@angular/common/http';
+import { BaseApiService } from '@shared/services/base-api/base-api.service';
+import { EMAIL_VALIDATOR, PASSWORD_VALIDATOR } from '@shared/utils/form-validation.utils';
 
 @Component({
   selector: 'app-login',
@@ -20,22 +21,14 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
   showPw = false;
   submitted: boolean;
 
+  // Validators are set in the method setFormValidators
   form: FormGroup = new FormGroup({
-    email: new FormControl('', LoginComponent.EMAIL_VALIDATOR),
+    email: new FormControl('', EMAIL_VALIDATOR),
     password: new FormControl(''),
     password_confirm: new FormControl(''),
     terms_conditions: new FormControl(''),
   });
 
-  private static readonly EMAIL_VALIDATOR = [  	
-    Validators.required,
-    Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-  ]; 
-
-  private static readonly PASSWORD_VALIDATOR = [
-    Validators.required,
-  ]
-  
   private destroy$ = new Subject();
 
   constructor(
@@ -46,7 +39,8 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
   }
 
   ngOnInit(): void {
-    this.formWatcher();
+    this.formValueWatcher();
+    this.setFormValidators(this.view);
   }
   
   ngOnDestroy(): void {
@@ -55,24 +49,15 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
   }
 
   /**
-   * Change form and add/remove validators 
-   * @param type for setting validator to specific field 
+   * Reset form and change form for other 'view' 
+   * @param type of form
    */
   changeForm(type: number): void {
     this.view = type;
     this.form.reset();
     this.form.clearValidators();
 
-    if (type === ViewType.Login || type === ViewType.SignUp) {
-      this.form.get('password').setValidators(LoginComponent.PASSWORD_VALIDATOR);
-    }
-
-    if (type === ViewType.SignUp) {
-      this.form.get('password_confirm').setValidators([Validators.required]);
-      this.form.get('terms_conditions').setValidators([Validators.required]);
-    }
-    
-    this.form.updateValueAndValidity();
+    this.setFormValidators(type);
   }
 
   /**
@@ -114,7 +99,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
 
     if (this.form.valid) {
       // TODO: Adjust request response and error handling
-      this.stub = ApiUrls.Login;
+      this.stub = BaseApiService.URLS.Login;
       this.post(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
@@ -136,7 +121,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
 
     if (this.form.valid) {
       // TODO: Adjust request
-      this.stub = ApiUrls.Login;
+      this.stub = BaseApiService.URLS.Login;
       this.post(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
@@ -171,7 +156,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     }
 
     // TODO: Adjust request 
-    this.stub = ApiUrls.SignUp;
+    this.stub = BaseApiService.URLS.SignUp;
     this.put(rawForm)
       .pipe(
         takeUntil(this.destroy$), 
@@ -185,10 +170,29 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
       )
   }
 
+    /**
+   * Change form and add/remove validators 
+   * @param type for setting validator to specific field 
+   */
+     private setFormValidators(type: number): void {
+
+      if (type === ViewType.Login || type === ViewType.SignUp) {
+        this.form.get('password').setValidators(PASSWORD_VALIDATOR);
+      }
+  
+      if (type === ViewType.SignUp) {
+        this.form.get('password_confirm').setValidators([Validators.required]);
+        this.form.get('terms_conditions').setValidators([Validators.required]);
+      }
+      
+      this.form.updateValueAndValidity();
+    }
+  
+
   /**
    * Observe form changes
    */
-  private formWatcher(): void {
+  private formValueWatcher(): void {
     this.form.valueChanges.subscribe(() => {
       // Sets submitted to false to hide input error styling until user submits form again
       this.submitted = false;
