@@ -18,19 +18,23 @@
                 
                 <!-- Password input for login / sign up -->
                 <div *ngIf="view === viewType.Login || view === viewType.SignUp" class="login--form-email--password">
-                    <input formControlName="password" [type]="showPw ? 'text' : 'password'" [placeholder]="'app.forms.password' | translate">
-                    <div class="icon" (click)="showPw = !showPw">
+                    <div class="login--form-email--password--field">
+                        <input formControlName="password" [type]="showPw ? 'text' : 'password'" [placeholder]="'app.forms.password' | translate">
+                        <div class="icon" (click)="showPw = !showPw">
+                            <span class="material-icons">
+                                {{ showPw ? 'visibility_off' : 'visibility'}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Forgot password / password restriction -->
+                    <!-- TODO: Add tooltip -->
+                    <!-- TODO: ngIf & click for forgot & restrictions-->
+                    <div *ngIf="view === viewType.Login" class="login--form-email--password--info" (click)="view = viewType.ForgotPw; resetSubmitted()">
                         <span class="material-icons">
-                            {{ showPw ? 'visibility_off' : 'visibility'}}
+                            help_outline
                         </span>
                     </div>
-                </div>
-
-                <!-- Forgot password for login -->      
-                <div class="login--more-options">
-                    <span *ngIf="view === viewType.Login" (click)="view = viewType.ForgotPw; resetSubmitted()">
-                        {{ 'login.forgot_pw' | translate }}
-                    </span>
                 </div>
         
                 <!-- Confirm password input for sign up -->

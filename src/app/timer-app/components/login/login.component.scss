@@ -43,12 +43,36 @@
         &-email--password {
             display: flex;
             align-items: center;
-            margin: 15px 0;
-            position: relative;
+
+            &--field {
+                position: relative;
+                display: flex;
+                align-items: center;
+                width: 100%;
+                margin: 15px 0;
+
+                .material-icons {
+                    font-size: 14px;
+                }
+            }
+
+            &--info {
+                background: var(--primary);
+                padding: 9px 9px;
+                display: flex;
+                border-radius: 8px;
+                margin-left: 5px;
+
+                .material-icons {
+                    font-size: 16px;
+                    color: var(--white); 
+                }
+            }
 
             .icon {
                 position: absolute;
                 right: 10px;
+                display: flex;
 
                 .material-icons {
                     font-size: 20px;
