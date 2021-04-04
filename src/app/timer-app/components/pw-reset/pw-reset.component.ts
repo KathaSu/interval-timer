@@ -3,7 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { BaseApiService } from '../../../shared/services/base-api.service';
+import { BaseApiService } from '../../../shared/services/base-api/base-api.service';
+import { ApiUrls } from '../../../shared/services/base-api/base-api.enum';
 
 @Component({
   selector: 'app-pw-reset',
@@ -11,7 +12,7 @@ import { BaseApiService } from '../../../shared/services/base-api.service';
   styleUrls: ['./pw-reset.component.scss']
 })
 export class PwResetComponent extends BaseApiService implements OnInit, OnDestroy {
-  readonly stub = 'pw-reset/';
+  readonly stub = ApiUrls.PwReset;
   
   submitted: boolean;
   showPw: boolean;

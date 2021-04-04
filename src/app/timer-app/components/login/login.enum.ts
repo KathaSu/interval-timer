@@ -4,7 +4,3 @@ export enum ViewType {
     SignUp, 
 }
 
-export enum ApiUrl {
-    Login = 'login/',
-    SignUp = 'sign-up/',
-}

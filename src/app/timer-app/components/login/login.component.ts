@@ -3,9 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ApiUrl, ViewType } from './login.enum';
+import { ViewType } from './login.enum';
 import { SignUpData } from './login.interface';
-import { BaseApiService } from '../../../shared/services/base-api.service';
+import { BaseApiService } from '../../../shared/services/base-api/base-api.service';
+import { ApiUrls } from '../../../shared/services/base-api/base-api.enum';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -14,7 +15,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends BaseApiService implements OnInit, OnDestroy {  
-  stubType = ApiUrl;
+  reqUrls = ApiUrls;
 
   view = ViewType.Login;
   viewType = ViewType;  
@@ -117,7 +118,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     this.submitted = true;
     if (this.form.valid) {
       // TODO: Adjust request response and error handling
-      this.stub = this.stubType.Login;
+      this.stub = this.reqUrls.Login;
       this.post(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
@@ -138,7 +139,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     if (this.form.valid) {
       console.log('forgotPw', this.form.valid, this.form.getRawValue());
       // TODO: Adjust request
-      this.stub = this.stubType.Login;
+      this.stub = this.reqUrls.Login;
       this.post(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
@@ -168,7 +169,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     }
 
     // TODO: Adjust request 
-    this.stub = this.stubType.SignUp;
+    this.stub = this.reqUrls.SignUp;
     this.put(rawForm)
       .pipe(takeUntil(this.destroy$))
       .subscribe(

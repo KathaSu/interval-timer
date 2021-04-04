@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IntervalTimer } from './timer-list.interface';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { BaseApiService } from 'src/app/shared/services/base-api.service';
+import { BaseApiService } from '../../../shared/services/base-api/base-api.service';
+import { ApiUrls } from '../../../shared/services/base-api/base-api.enum';
 import { HttpClient } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators';
 
@@ -12,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./timer-list.component.scss']
 })
 export class TimerListComponent extends BaseApiService implements OnInit, OnDestroy {
-  readonly stub = 'timer-list/';
+  readonly stub = ApiUrls.TimerList;
 
   list: Array<IntervalTimer> = [
     {
