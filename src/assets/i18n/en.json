@@ -3,8 +3,7 @@
         "title": "Interval Timer",
         "actions": {
             "submit": "Submit",
-            "cancel": "Cancel",
-            "back": "Back"
+            "cancel": "Cancel"
         },
         "forms": {
             "email": "Email",
@@ -20,7 +19,8 @@
         "to": "Login to",
         "or": "or",
         "via_google": "Login with Google",
-        "forgot_pw": "Forgot password"
+        "forgot_pw": "Forgot password", 
+        "back": "Go back to login."
     },
     "pw_reset": {
         "title": "Set new password",
@@ -29,7 +29,8 @@
     "sign_up": {
         "title": "Sign up",
         "no_account": "Don't have an account?",
-        "already_account": "Already have an account? Login."
+        "already_account": "Already have an account? Login.",
+        "terms_conditions": "Terms and conditions"
     },
     "logout": {
         "title": "Logout",

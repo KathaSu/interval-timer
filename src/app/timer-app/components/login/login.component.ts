@@ -15,8 +15,6 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends BaseApiService implements OnInit, OnDestroy {  
-  reqUrls = ApiUrls;
-
   view = ViewType.Login;
   viewType = ViewType;  
   showPw = false;
@@ -36,9 +34,6 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
 
   private static readonly PASSWORD_VALIDATOR = [
     Validators.required,
-    // TODO: Correct regex for password
-    // Minimum eight characters, at least one letter, one number and one special character
-    // Validators.pattern("^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"),
   ]
   
   private destroy$ = new Subject();
@@ -114,11 +109,12 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
    * Login via email
    */
   private emailLogin(): void {
-    console.log('MUH', this.form);
+    console.log('login', this.form);
     this.submitted = true;
+
     if (this.form.valid) {
       // TODO: Adjust request response and error handling
-      this.stub = this.reqUrls.Login;
+      this.stub = ApiUrls.Login;
       this.post(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
@@ -136,14 +132,18 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
    */
   private forgotPw(): void {
     this.submitted = true;
+    console.log('forgotPw', this.form.valid, this.form.getRawValue());
+
     if (this.form.valid) {
-      console.log('forgotPw', this.form.valid, this.form.getRawValue());
       // TODO: Adjust request
-      this.stub = this.reqUrls.Login;
+      this.stub = ApiUrls.Login;
       this.post(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
-          () => this.form.reset(),
+          () => {
+            this.form.reset();
+            this.submitted = false;
+          },
           () => null,
         )
     }
@@ -154,6 +154,8 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
    * @returns If form is invalid or password don't match validator or both passwords don't match
    */
   private signUp(): void {
+    console.log('sign up', this.form);
+  
     this.submitted = true;
 
     // Return if form is invalid
@@ -169,11 +171,16 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     }
 
     // TODO: Adjust request 
-    this.stub = this.reqUrls.SignUp;
+    this.stub = ApiUrls.SignUp;
     this.put(rawForm)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$), 
+      )
       .subscribe(
-        () => this.form.reset(),
+        () => {
+          this.form.reset(); 
+          this.submitted = false;
+        },
         () => null,
       )
   }
@@ -198,7 +205,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
    * @param value: true to set errors and null to reset errors 
    */
   private setPwErrors(value: true | null): void {
-    this.form.get('password').setErrors({'incorrect': value});
-    this.form.get('password_confirm').setErrors({'incorrect': value});
+    this.form.get('password').setErrors(value ? {'incorrect': value} : null);
+    this.form.get('password_confirm').setErrors(value ? {'incorrect': value} : null);
   }
 }

@@ -116,7 +116,8 @@ button {
   }
 }
 
-input {
+input[type=text],
+input[type=password] {
   background: var(--light-primary);
   box-sizing: border-box;
   width: 100%;

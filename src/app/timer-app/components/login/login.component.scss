@@ -29,6 +29,7 @@
     }
 
     &--form {
+        // TODO: Global styling
         &-email--password {
             display: flex;
             align-items: center;
@@ -48,11 +49,6 @@
             &-confirm {
                 margin-bottom: 15px;
             }
-        }
-
-        button {
-            width: 100%;
-            margin-bottom: 15px;
         }
     }
 
@@ -75,8 +71,26 @@
         } 
     }
 
+    // TODO:; Global styling
+    &--checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        
+        label {
+            margin-left: 5px;
+            font-size: 12px;
+        }
+    }
+
     &--more-options {
         cursor: pointer;
         font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 15px;
     }
 }

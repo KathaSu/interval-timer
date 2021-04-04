@@ -27,14 +27,19 @@
                 </div>
 
                 <!-- Forgot password for login -->      
-                <span *ngIf="view === viewType.Login" class="login--more-options" (click)="view = viewType.ForgotPw; resetSubmitted()">
-                    {{ 'login.forgot_pw' | translate }}
-                </span>
+                <div class="login--more-options">
+                    <span *ngIf="view === viewType.Login" (click)="view = viewType.ForgotPw; resetSubmitted()">
+                        {{ 'login.forgot_pw' | translate }}
+                    </span>
+                </div>
         
                 <!-- Confirm password input for sign up -->
                 <ng-container *ngIf="view === viewType.SignUp">
-                    <input class="login--form-email--password-confirm" formControlName="password_confirm" type="password" [placeholder]="'app.forms.password_confirm' | translate">
-                    <input type="checkbox" formControlName="terms_conditions">
+                    <input formControlName="password_confirm" type="password" class="login--form-email--password-confirm" [placeholder]="'app.forms.password_confirm' | translate">
+                    <div class="login--checkbox">
+                        <input formControlName="terms_conditions" type="checkbox" id="terms" name="terms">
+                        <label for="terms">{{ 'sign_up.terms_conditions' | translate }}</label>
+                    </div>
                 </ng-container>
 
                 <!-- Submit button -->
@@ -56,17 +61,21 @@
                 </button>
 
                 <!-- Sign up -->
-                <span class="login--more-options" (click)="changeForm(viewType.SignUp)">
-                    {{ 'sign_up.no_account' | translate }} {{ 'sign_up.title' | translate }}
-                </span>
+                <div class="login--more-options">
+                    <span (click)="changeForm(viewType.SignUp)">
+                        {{ 'sign_up.no_account' | translate }} {{ 'sign_up.title' | translate }}
+                    </span>
+                </div>
             </ng-container>
 
             <!-- Already have an account - go back to login  -->
-            <span *ngIf="view === viewType.SignUp" class="login--more-options" (click)="changeForm(viewType.Login)">{{ 'sign_up.already_account' | translate }}</span>
+            <span *ngIf="view === viewType.SignUp" class="login--more-options" (click)="changeForm(viewType.Login)">
+                {{ 'sign_up.already_account' | translate }}
+            </span>
 
             <!-- Back to login -->
-            <div *ngIf="view === viewType.ForgotPw" class="login--back" (click)="changeForm(viewType.Login); resetSubmitted()">
-                {{ 'app.actions.back' | translate }}
+            <div *ngIf="view === viewType.ForgotPw" class="login--more-options" (click)="changeForm(viewType.Login); resetSubmitted()">
+                {{ 'login.back' | translate }}
             </div>
         </div>
     </div>
