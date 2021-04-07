@@ -1,3 +1,5 @@
+<meta name="google-signin-client_id" content="165677235594-6d8h0lv9n1535ec7ja9tsbr1tioproti.apps.googleusercontent.com">
+
 <div class="login">
     <!-- Left container -->
     <div class="login-container--left">
@@ -52,17 +54,24 @@
                     <span *ngIf="view === viewType.ForgotPw">{{ 'app.actions.submit' | translate }}</span>
                     <span *ngIf="view === viewType.SignUp">{{ 'sign_up.title' | translate }}</span>
                 </button>
+
+                <!-- Already have an account - go back to login  -->
+                <span *ngIf="view === viewType.SignUp" class="login--more-options" (click)="changeForm(viewType.Login)">
+                    {{ 'sign_up.already_account' | translate }}
+                </span>
+
             </form>
             
             <!-- Login via Google or sign up -->
-            <ng-container *ngIf="view === viewType.Login">
+            <div [hidden]="view !== viewType.Login">
                 <!-- Divider -->
                 <hr class="login--divider" [attr.data-after-content]="'login.or' | translate">
 
                 <!-- Via Google -->
-                <button (click)="googleLogin()">
-                    <span>{{ 'login.via_google' | translate }}</span>
-                </button>
+                <div class="login--google">
+                    <div class="g-signin2" data-onsuccess="onSignIn" data-longtitle="true"></div>
+                    <!-- <div class="g-signin2" data-onsuccess="onSignIn" data-longtitle="true" data-ux_mode="redirect"></div> -->
+                </div>
 
                 <!-- Sign up -->
                 <div class="login--more-options">
@@ -70,12 +79,7 @@
                         {{ 'sign_up.no_account' | translate }} {{ 'sign_up.title' | translate }}
                     </span>
                 </div>
-            </ng-container>
-
-            <!-- Already have an account - go back to login  -->
-            <span *ngIf="view === viewType.SignUp" class="login--more-options" (click)="changeForm(viewType.Login)">
-                {{ 'sign_up.already_account' | translate }}
-            </span>
+            </div>
 
             <!-- Back to login -->
             <div *ngIf="view === viewType.ForgotPw" class="login--more-options" (click)="changeForm(viewType.Login); resetSubmitted()">

@@ -9,7 +9,7 @@ import { TimerListComponent } from './timer-app/components/timer-list/timer-list
 import { TimerComponent } from './timer-app/components/timer/timer.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: '', component: LoginComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'timer-list', component: TimerListComponent },
   { path: 'pw-reset', component: PwResetComponent },

@@ -105,6 +105,12 @@
         } 
     }
 
+    &--google {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+    }
+
     // TODO:; Global styling
     &--checkbox {
         display: flex;

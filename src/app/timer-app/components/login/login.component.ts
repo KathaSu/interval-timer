@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -9,6 +9,8 @@ import { ViewType } from './login.enum';
 import { SignUpData } from './login.interface';
 import { BaseApiService } from '@shared/services/base-api/base-api.service';
 import { EMAIL_VALIDATOR, PASSWORD_VALIDATOR } from '@shared/utils/form-validation.utils';
+import { Meta } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -32,13 +34,34 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
   private destroy$ = new Subject();
 
   constructor(
-    private router: Router,
     protected http: HttpClient,
+    private router: Router,
+    private ngZone: NgZone,
+    private renderer: Renderer2,
+
+    private meta: Meta,
+    @Inject(DOCUMENT) private doc: Document,
   ) { 
     super(http);
+
+    window['onSignIn'] = user => this.ngZone.run(
+      () => {
+        this.googleSignUp(user);      
+      }
+    )
   }
 
   ngOnInit(): void {
+    this.meta.addTags([
+      {name: 'google-signin-client_id', content: '165677235594-6d8h0lv9n1535ec7ja9tsbr1tioproti.apps.googleusercontent.com'}
+    ]);
+
+    let script = this.renderer.createElement('script');
+    script.src = 'https://apis.google.com/js/platform.js';
+    script.defer = true;
+    script.async = true; 
+    this.renderer.appendChild(document.body, script);
+
     this.formValueWatcher();
     this.setFormValidators(this.view);
   }
@@ -82,13 +105,6 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
   resetSubmitted(): void {
     this.submitted = false;
   }
-    
-  /**
-   * Login via Google
-   */
-  googleLogin(): void {
-    console.log('google login');
-  }
 
   /**
    * Login via email
@@ -110,6 +126,10 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
           () => this.router.navigateByUrl('/timer-list'),
         )
     }
+  }
+
+  private googleSignUp(user): void {
+    console.log(user);
   }
 
   /**

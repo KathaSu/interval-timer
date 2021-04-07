@@ -18,7 +18,6 @@
         "title": "Login",
         "to": "Login to",
         "or": "or",
-        "via_google": "Login with Google",
         "forgot_pw": "Forgot password", 
         "back": "Go back to login."
     },
