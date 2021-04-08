@@ -6,3 +6,8 @@ export enum ApiUrls {
     Settings = 'settings/',
     Logout = 'logout/'
 }
+
+export enum QueryUrls {
+    LoginToken = 'token',
+    ID = 'id',
+}

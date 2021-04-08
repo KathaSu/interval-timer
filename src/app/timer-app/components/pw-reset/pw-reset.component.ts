@@ -62,7 +62,7 @@ export class PwResetComponent extends BaseApiService implements OnInit, OnDestro
     }
 
     // TODO: Adjust request 
-    this.put(rawForm)
+    this.putBody(rawForm)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => this.form.reset(),

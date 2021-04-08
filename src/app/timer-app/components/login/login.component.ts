@@ -1,16 +1,16 @@
-import { Component, Inject, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { Meta } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ViewType } from './login.enum';
 import { SignUpData } from './login.interface';
-import { BaseApiService } from '@shared/services/base-api/base-api.service';
 import { EMAIL_VALIDATOR, PASSWORD_VALIDATOR } from '@shared/utils/form-validation.utils';
-import { Meta } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
+import { QueryParams } from '@shared/services/base-api/base-api.interface';
+import { BaseApiService } from '@shared/services/base-api/base-api.service';
 
 @Component({
   selector: 'app-login',
@@ -38,9 +38,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     private router: Router,
     private ngZone: NgZone,
     private renderer: Renderer2,
-
     private meta: Meta,
-    @Inject(DOCUMENT) private doc: Document,
   ) { 
     super(http);
 
@@ -52,15 +50,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
   }
 
   ngOnInit(): void {
-    this.meta.addTags([
-      {name: 'google-signin-client_id', content: '165677235594-6d8h0lv9n1535ec7ja9tsbr1tioproti.apps.googleusercontent.com'}
-    ]);
-
-    let script = this.renderer.createElement('script');
-    script.src = 'https://apis.google.com/js/platform.js';
-    script.defer = true;
-    script.async = true; 
-    this.renderer.appendChild(document.body, script);
+    this.addGoogleMetaTagAndScript();
 
     this.formValueWatcher();
     this.setFormValidators(this.view);
@@ -107,7 +97,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
   }
 
   /**
-   * Login via email
+   * Login with email
    */
   private emailLogin(): void {
     console.log('login', this.form);
@@ -116,7 +106,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     if (this.form.valid) {
       // TODO: Adjust request response and error handling
       this.stub = BaseApiService.URLS.Login;
-      this.post(this.form.getRawValue())
+      this.postBody(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           () => { 
@@ -128,8 +118,42 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     }
   }
 
-  private googleSignUp(user): void {
-    console.log(user);
+  /**
+   * Sign in with google
+   */
+  private googleSignUp(googleUser): void {
+    // TODO: Different endpoint?
+    this.stub = BaseApiService.URLS.Login;
+    const params: QueryParams = {
+      [BaseApiService.QUERY.LoginToken]: googleUser.getAuthResponse().id_token,
+    };
+
+    this.postQuery(params)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(
+      (res) => this.router.navigateByUrl('/timer-list'),
+      (err) => {
+        // TODO: Backend checks if google user has account, if not route to sign up
+        if (err === 404) {
+          this.view = ViewType.SignUp;
+        }
+      },
+    )
+  }
+
+  /**
+   * Add Google meta tag and script
+   */
+  private addGoogleMetaTagAndScript(): void {
+    this.meta.addTags([
+      {name: 'google-signin-client_id', content: '165677235594-6d8h0lv9n1535ec7ja9tsbr1tioproti.apps.googleusercontent.com'}
+    ]);
+
+    let script = this.renderer.createElement('script');
+    script.src = 'https://apis.google.com/js/platform.js';
+    script.defer = true;
+    script.async = true; 
+    this.renderer.appendChild(document.body, script);
   }
 
   /**
@@ -142,7 +166,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
     if (this.form.valid) {
       // TODO: Adjust request
       this.stub = BaseApiService.URLS.Login;
-      this.post(this.form.getRawValue())
+      this.postBody(this.form.getRawValue())
         .pipe(takeUntil(this.destroy$))
         .subscribe(
           () => {
@@ -177,7 +201,7 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
 
     // TODO: Adjust request 
     this.stub = BaseApiService.URLS.SignUp;
-    this.put(rawForm)
+    this.putBody(rawForm)
       .pipe(
         takeUntil(this.destroy$), 
       )
@@ -190,23 +214,22 @@ export class LoginComponent extends BaseApiService implements OnInit, OnDestroy 
       )
   }
 
-    /**
+  /**
    * Change form and add/remove validators 
    * @param type for setting validator to specific field 
    */
-     private setFormValidators(type: number): void {
-
-      if (type === ViewType.Login || type === ViewType.SignUp) {
-        this.form.get('password').setValidators(PASSWORD_VALIDATOR);
-      }
-  
-      if (type === ViewType.SignUp) {
-        this.form.get('password_confirm').setValidators([Validators.required]);
-        this.form.get('terms_conditions').setValidators([Validators.required]);
-      }
-      
-      this.form.updateValueAndValidity();
+  private setFormValidators(type: number): void {
+    if (type === ViewType.Login || type === ViewType.SignUp) {
+      this.form.get('password').setValidators(PASSWORD_VALIDATOR);
     }
+
+    if (type === ViewType.SignUp) {
+      this.form.get('password_confirm').setValidators([Validators.required]);
+      this.form.get('terms_conditions').setValidators([Validators.required]);
+    }
+    
+    this.form.updateValueAndValidity();
+  }
   
 
   /**

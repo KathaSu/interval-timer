@@ -87,8 +87,11 @@ export class TimerListComponent extends BaseApiService implements OnInit, OnDest
    * @param id of interval timer 
    */
   deleteTimer(index: number, id: number): void {
-    // TODO: Adjust Request 
-    this.delete(id)
+    // TODO: Adjust Request
+    const data = {
+      [BaseApiService.QUERY.ID]: id,
+    } 
+    this.delete(data)
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         () => this.list.splice(index, 1),
